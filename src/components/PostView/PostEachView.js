@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"
 
 import Comment from "./comments/Comment"
 import parse from "html-react-parser"
-import { stringify } from "postcss"
 
 // props: data, comments, getPrev, getNext, refreshFunc
 function PostEachView(props) {
@@ -85,6 +84,7 @@ function PostEachView(props) {
           style={{ fontSize: "18px" }}
         >
           {parse("" + data.desc)}
+          {data.fileURL}
         </div>
       </div>
 

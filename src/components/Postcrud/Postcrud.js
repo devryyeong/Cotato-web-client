@@ -11,8 +11,7 @@ Quill.register("modules/ImageResize", ImageResize)
 const PostCreate = ({ postService }) => {
   const [PostTitle, setPostTitle] = useState("")
   const [PostDesc, setPostDesc] = useState("")
-  const [FileName, setFileName] = useState("") //이미지 처리를 위한 상태
-  const [PostList, setPostList] = useState([])
+  const [FileName, setFileName] = useState([]) //이미지 처리를 위한 상태
   const quillRef = useRef()
 
   const category = useParams()
@@ -24,6 +23,12 @@ const PostCreate = ({ postService }) => {
 
   const onDescChange = (value) => {
     setPostDesc(value)
+  }
+
+  const onfileChange = (e) => {
+    console.log(e.target.value)
+    const newFileName = [...FileName, e.target.value]
+    setFileName(newFileName)
   }
 
   //////////////////////////// react-quill ////////////////////////////
@@ -92,46 +97,10 @@ const PostCreate = ({ postService }) => {
     "image",
   ]
 
-  //////////////////////////// react-quill ////////////////////////////
-
-  // const createHandler = () => {
-  //   const variable = {
-  //     title: PostTitle,
-  //     desc: PostDesc,
-  //   }
-
-  //   console.log(variable)
-
-  //   axios
-  //     .post(
-  //       "http://localhost:8080/cotato/" + category.category + "/createPost",
-  //       variable
-  //     )
-  //     .then((response) => {
-  //       console.log(response.config.data)
-  //       if (response.config.data) {
-  //         console.log("여기가 이프문 콘솔")
-  //         alert("작성 완료")
-  //         setTimeout(() => {
-  //           navigate("/cotato/" + category.category)
-  //         }, 500)
-  //       } else {
-  //         alert("게시물 등록 실패")
-  //       }
-  //     })
-  //     .catch(function (err) {
-  //       if (err.response) {
-  //         console.log(err.response.data)
-  //       } else if (err.request) {
-  //         //2.8 (화) request 오류. CORS때문일수도?
-  //         console.log(err.request)
-  //       }
-  //     })
-  // }
-
   const onSubmit = async (e) => {
     e.preventDefault()
-    postService.createPost(PostTitle, PostDesc, category)
+    axios.post("http://localhost:8080/cotato/files", { file: FileName })
+    postService.createPost(PostTitle, PostDesc, category, FileName)
     setTimeout(() => {
       navigate("/cotato/" + category.category)
     }, 500)
@@ -139,7 +108,7 @@ const PostCreate = ({ postService }) => {
 
   return (
     <div className="container">
-      <form onSubmit={onSubmit}>
+      <form name="desc" onSubmit={onSubmit}>
         <div className="mb-3">
           <label for="formGroupExampleInput" className="form-label">
             제목
@@ -174,7 +143,15 @@ const PostCreate = ({ postService }) => {
             />
           </div>
         </div>
-        {/* <div>image_image_image TAT</div> */}
+        <div>
+          <input
+            type="file"
+            name="upload_file"
+            multiple
+            value={FileName}
+            onChange={onfileChange}
+          />
+        </div>
         <br />
 
         <div className="col-12">

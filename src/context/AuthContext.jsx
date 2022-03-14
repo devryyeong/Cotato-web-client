@@ -8,8 +8,10 @@ import {
   useMemo,
   useState,
 } from "react"
+import App from "../App"
 
 import Login from "../components/Auth/Login"
+import LandingPage from "../components/LandingPage"
 
 const AuthContext = createContext({})
 
@@ -66,7 +68,7 @@ export function AuthProvider({ authService, authErrorEventBus, children }) {
         children
       ) : (
         <div className="app">
-          <Login onSignUp={signUp} onLogin={logIn} />
+          <App></App>
         </div>
       )}
     </AuthContext.Provider>

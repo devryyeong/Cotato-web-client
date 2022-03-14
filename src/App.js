@@ -23,7 +23,6 @@ function App({ postService }) {
           <Route exact path="/users/signup" element={<Register />} />
           <Route exact path="/mypage" element={<MyPage />} />
           <Route exact path="/edit" element={<Edit />} />
-
           <Route exact path="/cotato/:category" element={<Posts />} />
           {/* <Route exact path="/:category/:id" element={<PostEach />} /> */}
           <Route
