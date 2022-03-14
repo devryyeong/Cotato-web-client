@@ -131,7 +131,7 @@ const PostCreate = ({ postService }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault()
-    postService.createPost(PostTitle, PostDesc, category)
+    postService.createPost(PostTitle, PostDesc, category, attachment)
     setTimeout(() => {
       navigate("/cotato/" + category.category)
     }, 500)
@@ -172,6 +172,16 @@ const PostCreate = ({ postService }) => {
               name="desc"
               theme="snow"
             />
+          </div>
+
+          <div class="form-group">
+            <label for="attachment">Attachment</label>
+            <input
+              type="file"
+              name="attachment"
+              class="form-control-file"
+              id="attachment"
+            ></input>
           </div>
         </div>
         {/* <div>image_image_image TAT</div> */}
