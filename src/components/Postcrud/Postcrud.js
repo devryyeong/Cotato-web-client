@@ -99,6 +99,7 @@ const PostCreate = ({ postService }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault()
+    console.log(FileName)
     axios.post("http://localhost:8080/cotato/files", { file: FileName })
     postService.createPost(PostTitle, PostDesc, category, FileName)
     setTimeout(() => {

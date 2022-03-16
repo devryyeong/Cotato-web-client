@@ -23,7 +23,7 @@ const categoryList = [
   },
 ]
 
-function NavBar() {
+const NavBar = ({ onLogout }) => {
   const NavItem = ({ navname, href }) => {
     return (
       <li className="nav-item">
@@ -82,7 +82,8 @@ function NavBar() {
             </ul>
             <NavBtn href={"/users/signin"} title={"Login"} />
             <NavBtn href={"/users/signup"} title={"Register"} />
-            <NavBtn href={"/edit"} title={"회원정보 수정"} />
+
+            <button onClick={onLogout}>로그아웃</button>
           </div>
         </div>
       </nav>

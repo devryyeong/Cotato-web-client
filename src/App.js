@@ -1,5 +1,5 @@
 import React, { Suspense } from "react"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom"
 
 import LandingPage from "./components/LandingPage"
 import NavBar from "./components/Common/NavBar"
@@ -11,15 +11,36 @@ import MyPage from "./components/Auth/MyPage"
 import Posts from "./components/Postlist/PostList"
 import PostCreate from "./components/Postcrud/Postcrud"
 import PostEach from "./components/PostView/PostEach"
+import { useAuth } from "./context/AuthContext"
 
 function App({ postService }) {
+  const navigate = useNavigate()
+
+  const { user, logout, logIn } = useAuth()
+
+  const onLogout = () => {
+    if (window.confirm("Do you want to log out?")) {
+      logout()
+      navigate("/")
+    }
+  }
+
+  const onLogin = () => {
+    logIn()
+    navigate("/")
+  }
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <NavBar />
+      <NavBar onLogout={onLogout} />
       <div style={{ minHeight: "calc(100vh - 80px)" }}>
         <Routes>
           <Route exact path="/" element={<LandingPage />} />
-          <Route exact path="/users/signin" element={<Login />} />
+          <Route
+            exact
+            path="/users/signin"
+            element={<Login onLogin={onLogin} />}
+          />
           <Route exact path="/users/signup" element={<Register />} />
           <Route exact path="/mypage" element={<MyPage />} />
           <Route exact path="/edit" element={<Edit />} />
