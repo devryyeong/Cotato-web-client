@@ -12,7 +12,7 @@ export default class PostService {
     })
   }
 
-  async createPost(postTitle, postDesc, category) {
+  async createPost(postTitle, postDesc, category, attachment) {
     console.log(this.getHeaders())
     return this.http.fetch(`/cotato/${category.category}/createPost`, {
       method: "POST",
@@ -21,6 +21,7 @@ export default class PostService {
         title: postTitle,
         desc: postDesc,
         category: category.category,
+        attachment: attachment,
       }),
     })
   }
