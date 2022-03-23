@@ -15,8 +15,6 @@ const PostCreate = ({ postService }) => {
   //파일
   // var attachment = useState("")
   const [AttachmentName, setAttachmentName] = useState("")
-  const [FileName, setFileName] = useState("") //이미지 처리를 위한 상태
-  const [PostList, setPostList] = useState([])
 
   const quillRef = useRef()
 
@@ -29,12 +27,6 @@ const PostCreate = ({ postService }) => {
 
   const onDescChange = (value) => {
     setPostDesc(value)
-  }
-
-  const onfileChange = (e) => {
-    console.log(e.target.value)
-    const newFileName = [...FileName, e.target.value]
-    setFileName(newFileName)
   }
 
   //////////////////////////// react-quill ////////////////////////////
@@ -154,13 +146,12 @@ const PostCreate = ({ postService }) => {
 
       var filename = file.name
 
-      console.log(filename)
       try {
         const result = await axios.post(
           "http://localhost:8080/cotato/attachment",
           formData
         )
-        console.log(result)
+
         const attachment = result.data.attachmentName
         setAttachmentName(attachment)
         // console.log("성공 시, 백엔드가 보내주는 데이터", result.data.url)
@@ -249,15 +240,7 @@ const PostCreate = ({ postService }) => {
             ></input> */}
           </div>
         </div>
-        <div>
-          <input
-            type="file"
-            name="upload_file"
-            multiple
-            value={FileName}
-            onChange={onfileChange}
-          />
-        </div>
+
         <br />
 
         <div className="col-12">

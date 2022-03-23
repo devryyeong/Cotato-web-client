@@ -13,7 +13,8 @@ function PostEachView(props) {
   const getNext = props.getNext
   const comments = props.comments
   const refreshFunction = props.refreshFunction
-
+  const file_url = data.file_url
+  console.log(file_url)
   return (
     <div className="container mt-5">
       {/* ---------------------------- 카테고리, 글쓰기 ---------------------------- */}
@@ -84,7 +85,6 @@ function PostEachView(props) {
           style={{ fontSize: "18px" }}
         >
           {parse("" + data.desc)}
-          {data.fileURL}
         </div>
       </div>
 
@@ -92,10 +92,11 @@ function PostEachView(props) {
       <div className="row border-top border-dark">
         <div className="col-2 p-2">
           <img src="public/images/heartfilled.png" alt={"엑박"} />
+          <br></br>
           <small>
             {" "}
-            첨부파일 :{" "}
-            <a download URIEncoding="UTF-8" href={data.file_url}>
+            첨부파일 :
+            <a download href={file_url} target="_self">
               file
             </a>{" "}
           </small>
