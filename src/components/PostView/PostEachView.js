@@ -92,6 +92,13 @@ function PostEachView(props) {
       <div className="row border-top border-dark">
         <div className="col-2 p-2">
           <img src="public/images/heartfilled.png" alt={"엑박"} />
+          <small>
+            {" "}
+            첨부파일 :{" "}
+            <a download URIEncoding="UTF-8" href={data.file_url}>
+              file
+            </a>{" "}
+          </small>
           {/* <LikeBtn
               like={liked}
               onClick={() => {

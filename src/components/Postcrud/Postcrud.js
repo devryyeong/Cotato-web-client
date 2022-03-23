@@ -5,13 +5,19 @@ import ReactQuill, { Quill } from "react-quill"
 import "react-quill/dist/quill.snow.css"
 import CustomToolbar from "./CustomToolbar"
 import { applyMiddleware } from "redux"
-import ImageResize from "quill-image-resize"
+import ImageResize from "quill-image-resize-module-react"
 Quill.register("modules/ImageResize", ImageResize)
 
 const PostCreate = ({ postService }) => {
   const [PostTitle, setPostTitle] = useState("")
   const [PostDesc, setPostDesc] = useState("")
-  const [FileName, setFileName] = useState([]) //이미지 처리를 위한 상태
+
+  //파일
+  // var attachment = useState("")
+  const [AttachmentName, setAttachmentName] = useState("")
+  const [FileName, setFileName] = useState("") //이미지 처리를 위한 상태
+  const [PostList, setPostList] = useState([])
+
   const quillRef = useRef()
 
   const category = useParams()
@@ -97,11 +103,82 @@ const PostCreate = ({ postService }) => {
     "image",
   ]
 
+  //////////////////////////// react-quill ////////////////////////////
+
+  // const createHandler = () => {
+  //   const variable = {
+  //     title: PostTitle,
+  //     desc: PostDesc,
+  //   }
+
+  //   console.log(variable)
+
+  //   axios
+  //     .post(
+  //       "http://localhost:8080/cotato/" + category.category + "/createPost",
+  //       variable
+  //     )
+  //     .then((response) => {
+  //       console.log(response.config.data)
+  //       if (response.config.data) {
+  //         console.log("여기가 이프문 콘솔")
+  //         alert("작성 완료")
+  //         setTimeout(() => {
+  //           navigate("/cotato/" + category.category)
+  //         }, 500)
+  //       } else {
+  //         alert("게시물 등록 실패")
+  //       }
+  //     })
+  //     .catch(function (err) {
+  //       if (err.response) {
+  //         console.log(err.response.data)
+  //       } else if (err.request) {
+  //         //2.8 (화) request 오류. CORS때문일수도?
+  //         console.log(err.request)
+  //       }
+  //     })
+  // }
+
+  const attachmentHandler = () => {
+    const input = document.createElement("input")
+    input.setAttribute("type", "file")
+    // input.setAttribute("accept", "image/*")
+    input.click()
+
+    input.addEventListener("change", async (e) => {
+      var file = input.files[0]
+      var formData = new FormData()
+
+      formData.append("attachment", file)
+
+      var filename = file.name
+
+      console.log(filename)
+      try {
+        const result = await axios.post(
+          "http://localhost:8080/cotato/attachment",
+          formData
+        )
+        console.log(result)
+        const attachment = result.data.attachmentName
+        setAttachmentName(attachment)
+        // console.log("성공 시, 백엔드가 보내주는 데이터", result.data.url)
+        // const IMG_URL = result.data.url
+
+        // const editor = quillRef.current.getEditor()
+        // const range = editor.getSelection()
+        // editor.insertEmbed(range.index, "image", IMG_URL)
+      } catch (error) {
+        console.log("실패했어요ㅠ", error)
+      }
+    })
+  }
+
   const onSubmit = async (e) => {
     e.preventDefault()
-    console.log(FileName)
-    axios.post("http://localhost:8080/cotato/files", { file: FileName })
-    postService.createPost(PostTitle, PostDesc, category, FileName)
+    postService.createPost(PostTitle, PostDesc, category, AttachmentName)
+
     setTimeout(() => {
       navigate("/cotato/" + category.category)
     }, 500)
@@ -142,6 +219,34 @@ const PostCreate = ({ postService }) => {
               name="desc"
               theme="snow"
             />
+          </div>
+
+          {/* <div class="form-group">
+            <label for="attachment">Attachment</label>
+            <input
+              type="file"
+              name="attachment"
+              class="form-control-file"
+              id="attachment"
+            ></input>
+          </div> */}
+
+          {/* 파일 업로드 */}
+          <div>
+            <button type="button" onClick={attachmentHandler}>
+              {" "}
+              첨부파일:
+            </button>
+            {AttachmentName}
+
+            {/* <input
+              type="hidden"
+              id="attachment"
+              name="attachment"
+              onClick={attachmentHandler}
+              value={AttachmentName}
+              onChange={onAttachChange}
+            ></input> */}
           </div>
         </div>
         <div>
