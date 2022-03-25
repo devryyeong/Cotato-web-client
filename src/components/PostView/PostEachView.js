@@ -15,6 +15,7 @@ function PostEachView(props) {
   const refreshFunction = props.refreshFunction
   const file_url = data.file_url
   console.log(file_url)
+  console.log(data.attachment)
   return (
     <div className="container mt-5">
       {/* ---------------------------- 카테고리, 글쓰기 ---------------------------- */}
@@ -94,11 +95,13 @@ function PostEachView(props) {
           <img src="public/images/heartfilled.png" alt={"엑박"} />
           <br></br>
           <small>
-            {" "}
-            첨부파일 :
-            <a download href={file_url} target="_self">
-              file
-            </a>{" "}
+            {/* <div>
+              {data.attachment.map((file, index) => {
+                ;<a download href={file_url[index]} target="_self">
+                  file
+                </a>
+              })}
+            </div> */}
           </small>
           {/* <LikeBtn
               like={liked}

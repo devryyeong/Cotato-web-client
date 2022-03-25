@@ -14,7 +14,7 @@ const PostCreate = ({ postService }) => {
 
   //파일
   // var attachment = useState("")
-  const [AttachmentName, setAttachmentName] = useState("")
+  const [AttachmentName, setAttachmentName] = useState([])
 
   const quillRef = useRef()
 
@@ -135,23 +135,25 @@ const PostCreate = ({ postService }) => {
   const attachmentHandler = () => {
     const input = document.createElement("input")
     input.setAttribute("type", "file")
+    input.setAttribute("multiple", "true")
     // input.setAttribute("accept", "image/*")
     input.click()
 
     input.addEventListener("change", async (e) => {
-      var file = input.files[0]
-      var formData = new FormData()
-
-      formData.append("attachment", file)
-
-      var filename = file.name
+      const file = input.files
+      console.log(file)
+      const formData = new FormData()
+      for (var i = 0; i < file.length; i++) {
+        formData.append("attachment", file[i])
+        console.log(file[i])
+      }
 
       try {
         const result = await axios.post(
           "http://localhost:8080/cotato/attachment",
           formData
         )
-
+        console.log(result)
         const attachment = result.data.attachmentName
         setAttachmentName(attachment)
         // console.log("성공 시, 백엔드가 보내주는 데이터", result.data.url)
@@ -226,10 +228,9 @@ const PostCreate = ({ postService }) => {
           <div>
             <button type="button" onClick={attachmentHandler}>
               {" "}
-              첨부파일:
-            </button>
-            {AttachmentName}
-
+              첨부파일
+            </button>{" "}
+            <span> {AttachmentName}</span>
             {/* <input
               type="hidden"
               id="attachment"

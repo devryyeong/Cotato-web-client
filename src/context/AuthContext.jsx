@@ -68,7 +68,8 @@ export function AuthProvider({ authService, authErrorEventBus, children }) {
         children
       ) : (
         <div className="app">
-          <App></App>
+          <Login onLogin={logIn}></Login>
+          {/* <App></App> */}
         </div>
       )}
     </AuthContext.Provider>
